@@ -19,6 +19,10 @@ const defaultTags = {
   link: {
     tag: 'span',
     props: {}
+  },
+  linkPrevNext: {
+      tag: 'span',
+      props: {}
   }
 };
 
@@ -105,6 +109,31 @@ Button.contextTypes = {
   tags: React.PropTypes.object
 };
 
+class ButtonPrevNext extends React.Component {
+  render() {
+    const context = this.context;
+    const { page, children, ...props } = this.props;
+    const onSelect = context.onSelect;
+    const tags = context.tags;
+    const Tag = tags.segment.tag;
+    const Link = tags.linkPrevNext.tag;
+
+    return (<Tag {...tags.segment.props} {...props}>
+      <Link
+            {...tags.linkPrevNext.props}
+        onClick={(e) => onSelect(page, e)}>{children}</Link>
+    </Tag>);
+        }
+        }
+ButtonPrevNext.propTypes = {
+    children: React.PropTypes.any,
+    page: React.PropTypes.number.isRequired
+};
+ButtonPrevNext.contextTypes = {
+    onSelect: React.PropTypes.func,
+    tags: React.PropTypes.object
+};
+
 class Ellipsis extends React.Component {
   render() {
     const context = this.context;
@@ -137,5 +166,6 @@ export default {
   Context,
   Segment,
   Button,
-  Ellipsis
+  Ellipsis,
+  ButtonPrevNext
 };
